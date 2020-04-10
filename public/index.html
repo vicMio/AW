@@ -1,0 +1,101 @@
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- Titre de la page-->
+    <title>Morpion VJ</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+    <style>
+        html, body { height: 100%; margin: 0; padding: 0; }
+        #chat { height: calc(100% - 64px); margin:0; padding: 0; overflow: auto; list-style-type: none; }
+        #chat li { padding: 1em; }
+        #chat li:nth-child(odd) { background: #eee; }
+
+        p {
+          font-family: Optima;
+        }
+
+        h1 {
+          font-family: Optima; text-align: center; margin-top: 1em;
+        }
+
+       	* { box-sizing: border-box;}
+
+    		.row:after {
+            content: "";
+      			display: table;
+      			clear: both;
+      	}
+
+    		.left {
+    			width: 60%;
+      	}
+
+    		.right {
+    			width: 40%;
+    		}
+
+    		/* Crée deux colonnes côte à côte */
+    		.column {
+      			float: left;
+      			padding: 100px;
+      			height: 900px;
+    		}
+    </style>
+</head>
+
+<body>
+	<!-- Titre affiché -->
+  <h1>MORPION</h1>
+  	<!-- Règles -->
+  <p style="margin: 2em; text-align: justify;">Après avoir choisi leur pseudo et leur couleur, les deux joueurs s'affrontent tour à tour jusqu'à aligner trois pièces de leur couleur ou jusqu'à ce que le plateau soit rempli et que la partie résulte en un match nul. Le jeu tient compte des scores des joueurs en cours de jeu. Les participants qui arrivent alors que deux autres joeurs jouent déjà devront attendre leur tour. Ils peuvent néanmoins encourager et conseiller les joueurs en utilisant le chat. Lorsqu'un des joueurs se déconnecte, le plateau est réinitialisé et le premier participant en attente à être arrivé prend sa place.</p>
+
+  	<!-- Chargement et référencement des images -->
+	<div style="display:none;">
+		<img id="mouton" width="200" height="200" src="mouton.png" class="center">
+		<img id="tigre" width="200" height="200" src="tigre2.png" class="center">
+	</div>
+	<!-- Imports jQuery et socket.io -->
+	<script src="http://code.jquery.com/jquery-1.10.1.min.js"></script>
+    <script src="/socket.io/socket.io.js"></script>
+
+    <script>const socket = io();</script>
+
+	<div class="row">
+		<!-- Première colonne -->
+		<div class="column left" style="background-color:#fff;">
+      <div id="whoseTurnHTML"></div>
+			<!-- Canvas de jeu -->
+    		<canvas id="canvas"
+            		width=500
+            		height=1000><p>Désolé, votre navigateur n'aime pas Canvas. Mettez-vous à jour</p>
+            <script src="./plateau.js"></script>
+            <script src="./game.js"></script>
+    		</canvas>
+  		</div>
+
+  		<!-- Deuxième colonne -->
+  		<div class="column right" style="background-color:#bbb;">
+		    <!-- Chat -->
+		    <ul id="chat"></ul>
+
+		    <!-- Bouton d'envoi de message -->
+		    <form id="send" action="" autocomplete="off">
+		        <div class="input-group p-2">
+		            <input id="message"
+		                   class="form-control form-control-lg"
+		                   type="text"
+		                   placeholder="Envoyer un message">
+		            <div class="input-group-append">
+		                <button class="btn btn-lg btn-primary" type="submit" style="background-color: #555B61; border-color:#555B61; ">
+		                    Envoyer
+		                </button>
+		            </div>
+		        </div>
+		    </form>
+		    <script src="/chat.js"></script>
+		</div>
+	</div>
+</body>
+</html>
