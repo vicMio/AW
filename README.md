@@ -10,7 +10,7 @@ Rendu de **Jules Vanaret** et **Victoire Miossec**
   - `sudo apt install npm`
   - `npm install`
   - `npm install socket.io`
-  - npm run devstart`
+  - `npm run devstart`
   - ouvrez un onglet de votre navigateur et connectez-vous au port 3003 en tapant dans la barre d'adresse : `localhost:3003`
 
 - En ouvrant un deuxième onglet (`localhost:3003`), vous connectez un deuxième joueur et ainsi de suite.
