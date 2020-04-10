@@ -44,4 +44,5 @@ Il semble provenir du fait que plusieurs `update` de suite sont effectués avec 
 
 
 *10/04/2020 22:58 réglage du bug de saisie des couleurs*
+
 *10/04/2020 00:00 réglage du bug de saisie des couleurs pour un joueur en file d'attente*
