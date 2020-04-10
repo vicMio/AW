@@ -1,6 +1,6 @@
 # PROJET APPLICATIONS WEB : CODAGE D'UN MORPION - jeu multijoueur en Javascript.
 
-##Morpion nouvelle génération où le tigre veut manger le mouton, mais peut-être que le mouton saura s'échapper. A vous de montrer si vous êtes plus malin que le joueur d'en face !
+## Morpion nouvelle génération où le tigre veut manger le mouton, mais peut-être que le mouton saura s'échapper. A vous de montrer si vous êtes plus malin que le joueur d'en face !
 Rendu de **Jules Vanaret** et **Victoire Miossec**
 
 ## Fonctionnalités du jeu
