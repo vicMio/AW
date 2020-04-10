@@ -40,6 +40,11 @@ module.exports = function(server) {
       players[socket.id].isPlaying = 1;
       // On communique cette information directement au joueur
       io.to(`${socket.id}`).emit('message', players[socket.id].isPlaying);
+    }
+    else{
+      players[socket.id].isPlaying = 0;
+      // On communique cette information directement au joueur
+      io.to(`${socket.id}`).emit('message', players[socket.id].isPlaying);
     };
 
     // Ecoute de l'évènement 'nouveau pseudo', pour modifier le profil du joueur

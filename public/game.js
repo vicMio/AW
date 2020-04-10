@@ -332,6 +332,10 @@ canvas.onclick = function(e) {
 // Update régulière pour que le participant demande s'il est joueur, si la partie est
 // terminée, si le plateau doit être redessiné...
 function update() {
+  console.log(isPlaying);
+  if (isPlaying >= 0){
+
+
   // Le joueur demande son statut
   socket.emit('amIplaying','');
   document.getElementById('whoseTurnHTML').innerHTML = "<p> C'est au tour du joueur possédant le pion "+whoseTurn+" de jouer !</p>";
@@ -340,6 +344,7 @@ function update() {
   // Si le joeur vient d'arriver, on l'envoie choisir un pseudo
   if (r == 'new'){
     beginPseudo();
+    console.log(couleur);
   }
 
   // On met à jour le plateau, les scores, et on vérifie si la partie est terminée
@@ -388,6 +393,7 @@ function update() {
     socket.emit('is_ending', end);
     game_state = [0,0,0,0,0,0,0,0,0];
     socket.emit('game_changed', game_state, players_scores);
+  }
   }
   // Lance la nouvelle étape de boucle
   requestAnimationFrame(update);
