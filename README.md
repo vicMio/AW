@@ -4,7 +4,7 @@
 Rendu de **Jules Vanaret** et **Victoire Miossec**
 
 ## Fonctionnalités du jeu
-- Le jeu s'ouvre grâce au makefile joint à ce dossier. Il suffit donc de taper la commande `make` dans votre terminal, une fois que celui-ci est dans le dossier morpion pour qu'une page de jeu s'ouvre dans votre navigateur.
+- Le jeu s'ouvre grâce au makefile joint à ce dossier. Il suffit donc de taper la commande `make` dans votre terminal, une fois que celui-ci est dans le dossier morpion. Vous n'aurez plus qu'à lancer une partie dans votre navigateur en vous connectant au port 3003 : `localhost:3003` dans la barre d'adresse de votre navigateur.
 
 - Si le makefile ne fonctionne pas (question de compatibilité des systèmes d'exploitation par exemple) : tapez les commandes suivantes (ou équivalentes selon votre OS)
   - `sudo apt install npm`
