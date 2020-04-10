@@ -16,8 +16,8 @@ let players = [];
 let game_state = [];
 // Futurs scores
 let players_scores = [];
-// Permet d'annoncer la fin d'une partie. 0:partie en cours ; 1:partie terminée
-let end = 0;
+// Permet d'annoncer la fin d'une partie. 0:partie en cours ; 1/-1/2:partie terminée
+var end;
 var gagnant;
 
 // Variable qui donne l'état du participant dans le processus de choix du pseudo, de sa couleur
@@ -33,6 +33,8 @@ var couleur;
 var whoseTurn;
 // Variable qui indique si le participant joue ou s'il est spectateur
 var isPlaying;
+//Variable qui indique quel joueur actif est en train de partir
+var isLeaving;
 
 
 // Ecoute de l'évènement 'message'. Le participant reçoit sont état de
@@ -43,14 +45,28 @@ socket.on('message', function(playState){
 
 // Ecoute de l'évènement 'should_begin'. Le participant vient d'être transformé
 // en joueur, il doit donc choisir sa couleur
-socket.on('should_begin', function(){
-  beginColor();
+socket.on('should_begin', function(leaving_color){
+  couleur = leaving_color; //on recupere la couleur de celui qui part
+  if (couleur == 'tigre'){
+    player_id = -1;
+  }
+  else if (couleur == 'mouton'){
+    player_id = 1;
+  }
+  socket.emit('nouveau_couleur', [couleur, player_id]);
+  // Le joueur passe dans l'état 'all' lorsqu'il a choisi son pseudo et sa couleur
+  r='all';
+  //beginColor();
 });
 
 // Ecoute de l'évènement 'Turn'. Le serveur dit au joueur qui
 // doit jouer le prochain coup
 socket.on('Turn', function(Turn){
   whoseTurn = Turn;
+});
+
+socket.on('partie_ending', function(fin){
+  end = fin;
 });
 
 // Ecoute de l'évènement 'players_list'. Le joueur reçoit la liste
@@ -98,6 +114,7 @@ socket.on('reset', function() {
 
   // on reset le jeu
   game_state = [0,0,0,0,0,0,0,0,0];
+  end = 0;
   // on reset les score
   players.forEach(function(player) {
         player.score = 0;
@@ -120,6 +137,7 @@ function winAlert(fin){
 
 // Au lancement de la page, initialisation du pseudo du nouveau participant
 function beginPseudo(){
+  end = 0;
   // Si le participant vient tout juste d'arriver
   if (r == 'new'){
     pseudo = prompt('Quel est votre pseudo ?', 'Joueur');
@@ -224,7 +242,7 @@ function checkWin(){
     }
   }
   // On donne l'état de la partie : qui a gagné/ match nul/ partie en cours
-  socket.emit('is_ending', end);
+  //socket.emit('is_ending', end);
 };
 
 
@@ -320,7 +338,7 @@ canvas.onclick = function(e) {
   }
 
   // On prévient le serveur de l'avancé actuel de la partie
-  socket.emit('game_changed', game_state, players_scores);
+  socket.emit('game_changed', game_state, players_scores, end);
 
 };
 
@@ -332,7 +350,6 @@ canvas.onclick = function(e) {
 // Update régulière pour que le participant demande s'il est joueur, si la partie est
 // terminée, si le plateau doit être redessiné...
 function update() {
-  console.log(isPlaying);
   if (isPlaying >= 0){
 
 
@@ -344,7 +361,6 @@ function update() {
   // Si le joeur vient d'arriver, on l'envoie choisir un pseudo
   if (r == 'new'){
     beginPseudo();
-    console.log(couleur);
   }
 
   // On met à jour le plateau, les scores, et on vérifie si la partie est terminée
@@ -372,13 +388,11 @@ function update() {
     // ... et que le joeur 1 gagne
     if (end == player_id && end == 1){
       socket.emit('win_alert', end);
-      console.log(game_state);
       players_scores[0]+=1;
       alert('FIN DU JEU - JOUEUR MOUTON GAGNE');
     }// ou que le joueur -1 gagne
     else if (end == player_id && end == -1){
       socket.emit('win_alert', end);
-      console.log(game_state);
       players_scores[1]+=1;
       alert('FIN DU JEU - JOUEUR TIGRE GAGNE');
     }
@@ -390,9 +404,9 @@ function update() {
     // On réinitialise l'état de jeu
     end = 0;
     // On prévient le serveur de la fin
-    socket.emit('is_ending', end);
+    //socket.emit('is_ending', end);
     game_state = [0,0,0,0,0,0,0,0,0];
-    socket.emit('game_changed', game_state, players_scores);
+    socket.emit('game_changed', game_state, players_scores, end);
   }
   }
   // Lance la nouvelle étape de boucle

@@ -11,6 +11,7 @@ module.exports = function(server) {
   var game_state = [0,0,0,0,0,0,0,0,0];
   // Scores mouton, tigre
   var players_scores = [0,0];
+  var end = 0;
   // Variable "à qui le tour ?" qui gère le fait qu'un joueur ne peut joeur que
   // si c'est son tour. La variable change à chaque tour.
   var whoseTurn = 'tigre';
@@ -70,9 +71,10 @@ module.exports = function(server) {
     });
 
     // Ecoute de l'évènement 'game_changed'. Un joueur vient de faire un coup, l'état de jeu change.
-    socket.on('game_changed', function(arr, arr2) {
+    socket.on('game_changed', function(arr, arr2, fin) {
       game_state = arr;
       players_scores = arr2;
+      end = fin;
     });
 
     // Ecoute de l'évènement 'chat message'. Un participant a écrit un message, qu'il
@@ -116,7 +118,7 @@ module.exports = function(server) {
             players_scores = [0,0];
 
             // On dit au nouveau joueur qu'il doit maintenant choisir sa couleur
-            io.to(`${socketid}`).emit('should_begin','');
+            io.to(`${socketid}`).emit('should_begin', players[socket.id].c);
 
             // On ne transforme pas d'autres joueurs
             break;
@@ -150,6 +152,7 @@ module.exports = function(server) {
     // et la variable qui détermine qui doit joeur le prochain coup
     io.emit('players_list', Object.values(players));
     io.emit('game_state', Object.values(game_state));
+    io.emit('partie_ending', end);
     io.emit('scores', Object.values(players_scores));
     io.emit('Turn', whoseTurn);
   };

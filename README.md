@@ -23,12 +23,14 @@ Rendu de **Jules Vanaret** et **Victoire Miossec**
   - soit il était joueur actif, prenant part à la partie, auquel cas le premier joueur dans la file d'attente le remplace
   - soit il était passif, attendant patiemment son tour, auquel cas la file d'attente remonte.
 
-## Bugs que nous ne sommes pas parvenus à régler
+## Bug que nous ne sommes pas parvenus à régler
 Si le jeu marche dans son ensemble, il subsiste néanmoins quelques bugs que nous ne sommes pas parvenus à localiser, malgré de longues heures passées à débugger et commenter notre code.
 
-- Un des bugs est l'affichage de plusieurs boîtes de dialogues à la suite pour signaler à un joueur qu'il a gagné à la fin d'une partie, au lieu d'une seule et unique fois (nombre qui varie également aléatoirement la boîte de dialogue ne s'ouvre parfois qu'une fois comme dix d'affilée selon les parties).
+Il concerne est l'affichage de plusieurs boîtes de dialogues à la suite pour signaler à un joueur qu'il a gagné à la fin d'une partie, au lieu d'une seule et unique fois (nombre qui varie également aléatoirement la boîte de dialogue ne s'ouvre parfois qu'une fois comme dix d'affilée selon les parties).
 
-- Enfin, il arrive - rarement - que les scores ne se mettent pas à jour dès le début et restent à 0 après la première partie (pour ensuite s'incrémenter à partir de la deuxième).
+Explication possible :
+Il semble provenir du fait que plusieurs `update` de suite sont effectués avec le plateau de jeu terminé (match nul ou un joueur gagnant). Le programme doit garder en mémoire la valeur du `end` au moment de l'appel de la fonction (ou de sa mise sur le tas ou la pile (?)) et ne pas la mettre à jour une fois que l'un des update (remettant le `end` à 0) a été évalué. Ainsi, les autres `update`, qui étaient en attente jusque là, sont évalués avec l'ancienne valeur de `end` : d'où l'apparition de plusieurs alert. En revanche, les scores ne sont pas incrémentés d'autant, mais seulement de 1...
+
 
 ## Qui a fait quoi ?
 - Codage de la structure HTML + Plateau de référence + Placement des pions : **Victoire Miossec**
@@ -41,4 +43,5 @@ Si le jeu marche dans son ensemble, il subsiste néanmoins quelques bugs que nou
 - Codage du chat : **Jules Vanaret**
 
 
-*10/04/2020 22:58 réglage du bug de saisie des couleurs* 
+*10/04/2020 22:58 réglage du bug de saisie des couleurs*
+*10/04/2020 00:00 réglage du bug de saisie des couleurs pour un joueur en file d'attente*
